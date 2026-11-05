@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172554">
+<title>Mapa de Transposição Musical | Trompete em Si♭</title>
+<style>
+:root{--navy:#172554;--blue:#1d4ed8;--ink:#172033;--muted:#64748b;--paper:#f8fafc;--line:#dbe3ee;--green:#16845b;--gold:#d69e24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:var(--navy);color:#fff;padding:28px 18px 24px;border-bottom:5px solid var(--gold)}
+.wrap{max-width:980px;margin:auto;padding:0 16px}
+.kicker{font:700 .75rem/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bfdbfe}
+h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;margin:8px 0}
+header p{max-width:680px;color:#dbeafe;margin:10px 0 0;font-family:system-ui,sans-serif}
+main{padding:24px 0 48px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin:0 0 18px;box-shadow:0 5px 20px #0f172a08}
+h2{font-size:1.45rem;margin:0 0 6px}
+.lead,.hint{font-family:system-ui,sans-serif;color:var(--muted);font-size:.94rem}
+label{display:block;font:700 .9rem system-ui,sans-serif;margin:14px 0 6px}
+select{width:100%;max-width:420px;padding:12px;border:1px solid #b8c5d8;border-radius:10px;background:#fff;font:1rem system-ui,sans-serif}
+.result{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.note-card{background:#f1f5f9;border-radius:12px;padding:16px}
+.note-card small{display:block;color:var(--muted);font:700 .72rem system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.big-note{font-size:2.25rem;font-weight:bold;color:var(--blue);line-height:1.2;margin-top:4px}
+.pistons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:18px 0}
+.piston{width:92px;text-align:center;font-family:system-ui,sans-serif;font-size:.82rem}
+.circle{width:62px;height:62px;border:3px solid #94a3b8;border-radius:50%;display:grid;place-items:center;margin:0 auto 7px;background:#fff;font-size:1.5rem;font-weight:bold;color:#64748b}
+.circle.on{background:var(--green);border-color:var(--green);color:white}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-family:system-ui,sans-serif;font-size:.92rem}
+th,td{text-align:center;padding:10px 7px;border-bottom:1px solid var(--line)}
+th{background:#f1f5f9;color:#334155}
+tr.active{background:#e0f2fe;font-weight:700}
+.finger{white-space:nowrap;font-weight:700}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid #64748b;margin:0 2px;vertical-align:middle}
+.dot.on{background:var(--green);border-color:var(--green)}
+.staff{background:#fff;border-radius:12px;border:1px solid var(--line);padding:12px;overflow:hidden}
+.staff svg{display:block;width:100%;height:auto;max-height:190px}
+.staff-note{font: .82rem system-ui,sans-serif;color:var(--muted);margin-top:6px}
+.rule{border-left:4px solid var(--gold);padding:10px 14px;background:#fffbeb;border-radius:0 10px 10px 0;font-family:system-ui,sans-serif}
+footer{background:#0f172a;color:#cbd5e1;padding:20px;font: .82rem system-ui,sans-serif}
+button{border:0;background:var(--blue);color:#fff;border-radius:9px;padding:10px 14px;font:700 .9rem system-ui,sans-serif;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+@media(max-width:620px){.result{grid-template-columns:1fr}th,td{padding:8px 4px;font-size:.82rem}.panel{padding:16px}}
+@media print{header{background:#fff;color:#000;border-bottom:2px solid #000}header p,.kicker{color:#333}.panel{box-shadow:none;break-inside:avoid}footer,button{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="kicker">Material didático • instrumentos transpositores</div>
+  <h1>Mapa de Transposição Musical</h1>
+  <p>Guia visual de leitura, digitação e som real para trompete em Si♭.</p>
+ </div>
+</header>
+<main class="wrap">
+ <section class="panel">
+  <h2>Consultar uma nota</h2>
+  <p class="lead">Escolha uma nota escrita na partitura do trompete. O mapa mostra a combinação dos pistos e o som real produzido.</p>
+  <label for="noteSelect">Nota escrita para trompete em Si♭</label>
+  <select id="noteSelect"></select>
+  <div class="result">
+   <div class="note-card"><small>Nota escrita</small><div class="big-note" id="written">Dó4</div></div>
+   <div class="note-card"><small>Som real (concerto)</small><div class="big-note" id="concert">Si♭3</div></div>
+  </div>
+  <h3 style="text-align:center;margin:20px 0 0">Pistos</h3>
+  <div class="pistons" id="pistons" aria-live="polite"></div>
+  <p class="hint" id="fingeringText" style="text-align:center"></p>
+ </section>
+
+ <section class="panel">
+  <h2>Referência visual na pauta</h2>
+  <p class="lead">Representação esquemática das notas escritas na região média, em clave de sol.</p>
+  <div class="staff">
+   <svg viewBox="0 0 720 190" role="img" aria-label="Pauta musical esquemática em clave de sol, com notas de Dó4 a Dó5">
+    <g stroke="#64748b" stroke-width="1.5">
+     <line x1="70" y1="45" x2="690" y2="45"/><line x1="70" y1="65" x2="690" y2="65"/>
+     <line x1="70" y1="85" x2="690" y2="85"/><line x1="70" y1="105" x2="690" y2="105"/>
+     <line x1="70" y1="125" x2="690" y2="125"/>
+    </g>
+    <text x="12" y="112" font-size="82" fill="#172554">𝄞</text>
+    <g fill="#1d4ed8" font-size="15" font-family="Georgia">
+     <text x="72" y="177">Dó4</text><text x="158" y="177">Ré4</text><text x="244" y="177">Mi4</text>
+     <text x="330" y="177">Fá4</text><text x="416" y="177">Sol4</text><text x="502" y="177">Lá4</text>
+     <text x="588" y="177">Si4</text><text x="660" y="177">Dó5</text>
+    </g>
+    <g fill="#172554" stroke="#172554">
+     <ellipse cx="91" cy="145" rx="8" ry="5" transform="rotate(-18 91 145)"/><line x1="99" y1="145" x2="99" y2="95" stroke-width="2"/>
+     <ellipse cx="177" cy="135" rx="8" ry="5" transform="rotate(-18 177 135)"/><line x1="185" y1="135" x2="185" y2="85" stroke-width="2"/>
+     <ellipse cx="263" cy="125" rx="8" ry="5" transform="rotate(-18 263 125)"/><line x1="271" y1="125" x2="271" y2="75" stroke-width="2"/>
+     <ellipse cx="349" cy="115" rx="8" ry="5" transform="rotate(-18 349 115)"/><line x1="357" y1="115" x2="357" y2="65" stroke-width="2"/>
+     <ellipse cx="435" cy="105" rx="8" ry="5" transform="rotate(-18 435 105)"/><line x1="443" y1="105" x2="443" y2="55" stroke-width="2"/>
+     <ellipse cx="521" cy="95" rx="8" ry="5" transform="rotate(-18 521 95)"/><line x1="529" y1="95" x2="529" y2="45" stroke-width="2"/>
+     <ellipse cx="607" cy="85" rx="8" ry="5" transform="rotate(-18 607 85)"/><line x1="615" y1="85" x2="615" y2="35" stroke-width="2"/>
+     <ellipse cx="679" cy="75" rx="8" ry="5" transform="rotate(-18 679 75)"/><line x1="687" y1="75" x2="687" y2="25" stroke-width="2"/>
+    </g>
+    <line x1="78" y1="145" x2="104" y2="145" stroke="#172554" stroke-width="1.5"/>
+   </svg>
+   <div class="staff-note">Esquema ilustrativo para orientação. A posição exata das notas deve ser conferida na edição final da partitura.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>Tabela de digitação</h2>
+  <p class="lead">Região média: Dó4 a Dó5. ● indica pisto pressionado; ○ indica pisto aberto.</p>
+  <div style="overflow-x:auto">
+   <table>
+    <thead><tr><th>Nota escrita</th><th>1º</th><th>2º</th><th>3º</th><th>Som real</th></tr></thead>
+    <tbody id="tableBody"></tbody>
+   </table>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>Entenda a transposição</h2>
+  <div class="rule"><strong>Trompete em Si♭:</strong> quando o aluno lê Dó, o som produzido é Si♭ (um tom abaixo). Para tocar junto com instrumentos em Dó, ele lê um tom acima da tonalidade de concerto.</div>
+  <p>Exemplo: se a música está em Dó maior no teclado, o trompetista lê Ré maior. Assim, os dois instrumentos produzem a mesma escala sonora.</p>
+  <p class="hint">As combinações apresentadas são digitações convencionais da região média. A afinação pode exigir ajustes e algumas notas têm posições alternativas. A mesma combinação de pistos pode produzir diferentes notas em outras séries harmônicas.</p>
+  <button onclick="window.print()">Imprimir / salvar como PDF</button>
+ </section>
+</main>
+<footer><div class="wrap">Mapa de Transposição Musical • Material de apoio para aulas de música</div></footer>
+<script>
+const data=[
+ {n:"Dó4",s:"Si♭3",f:[0,0,0]},
+ {n:"Dó♯4 / Ré♭4",s:"Si3",f:[1,1,1]},
+ {n:"Ré4",s:"Dó4",f:[1,0,1]},
+ {n:"Mi♭4 / Ré♯4",s:"Dó♯4 / Ré♭4",f:[0,1,1]},
+ {n:"Mi4",s:"Ré4",f:[1,1,0]},
+ {n:"Fá4",s:"Mi♭4",f:[1,0,0]},
+ {n:"Fá♯4 / Sol♭4",s:"Mi4",f:[0,1,0]},
+ {n:"Sol4",s:"Fá4",f:[0,0,0]},
+ {n:"Lá♭4 / Sol♯4",s:"Fá♯4 / Sol♭4",f:[0,1,1]},
+ {n:"Lá4",s:"Sol4",f:[1,1,0]},
+ {n:"Si♭4 / Lá♯4",s:"Lá♭4 / Sol♯4",f:[1,0,0]},
+ {n:"Si4",s:"Lá4",f:[0,1,0]},
+ {n:"Dó5",s:"Si♭4",f:[0,0,0]}
+];
+const select=document.getElementById("noteSelect");
+const table=document.getElementById("tableBody");
+data.forEach((x,i)=>{
+ const o=document.createElement("option");o.value=i;o.textContent=x.n;select.appendChild(o);
+ const tr=document.createElement("tr");tr.dataset.index=i;
+ tr.innerHTML=`<td>${x.n}</td>${x.f.map(v=>`<td>${v?"●":"○"}</td>`).join("")}<td>${x.s}</td>`;
+ table.appendChild(tr);
+});
+function render(){
+ const x=data[Number(select.value)];
+ document.getElementById("written").textContent=x.n;
+ document.getElementById("concert").textContent=x.s;
+ document.getElementById("pistons").innerHTML=x.f.map((v,i)=>`<div class="piston"><div class="circle ${v?"on":""}">${v?"●":"○"}</div><strong>${i+1}º pisto</strong><br>${v?"Pressionar":"Aberto"}</div>`).join("");
+ document.getElementById("fingeringText").textContent="Digitação: "+(x.f.every(v=>!v)?"aberto":x.f.map((v,i)=>v?i+1:null).filter(v=>v!==null).join(" + "));
+ [...table.rows].forEach(r=>r.classList.toggle("active",Number(r.dataset.index)===Number(select.value)));
+}
+select.addEventListener("change",render);render();
+</script>
+</body>
+</html>
